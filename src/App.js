@@ -1,24 +1,36 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Header from './components/Header/Header';
+import Sidebar from './components/Sidebar/Sidebar';
+import OfficeHoursList from './components/OfficeHoursList/OfficeHoursList';
+import SuggestedTimings from './components/SuggestedTimings/SuggestedTimings';
+import StudentOfficeHoursList from './components/StudentOfficeHoursList/StudentOfficeHoursList';
+import TopBar from './components/TopBar/TopBar';
 import './App.css';
+import CalendarPage from './components/CalendarPage/CalendarPage';
+// Placeholder components for the pages you don't have yet
+const ProfilePage = () => <div>Profile Page Content</div>;
 
 function App() {
+  const [isStudent, setIsStudent] = useState(false); // Toggle this to switch views
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="app">
+        <Header />
+        <div className="main-content">
+          <Sidebar />
+          <div className="content-wrapper">
+            <Routes>
+              <Route path="/" element={isStudent ? <><TopBar /><StudentOfficeHoursList /></> : <><TopBar /><OfficeHoursList /><SuggestedTimings /></>} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/calendar" element={<CalendarPage />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
